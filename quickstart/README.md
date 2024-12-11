@@ -1,13 +1,19 @@
-# from official docs
+# From official docs
 
-## quickstart
+## Quickstart
 
-docker pull cassandra:latest
-docker network create cassandra
-docker run --rm -d --name cassandra --hostname cassandra --network cassandra cassandra
+### pull and run docker container
 
-create data.cql
----BEGIN
+Apache Cassandra 5.0.2
+
+```docker pull cassandra:latest```
+
+```docker network create cassandra```
+
+```docker run --rm -p 127.0.0.1:9042:9042 -p 127.0.0.1:9160:9160 -d --name cassandra --hostname cassandra --network cassandra cassandra```
+
+## create data.cql
+```
 CREATE KEYSPACE IF NOT EXISTS store WITH REPLICATION =
 { 'class' : 'SimpleStrategy',
 'replication_factor' : '1'
@@ -25,12 +31,23 @@ VALUES ('9876', 2, toTimeStamp(now()));
 INSERT INTO store.shopping_cart
 (userid, item_count, last_update_timestamp)
 VALUES ('1234', 5, toTimeStamp(now()));
----END
+```
 
 docker run --rm --network cassandra \
 -v "$(pwd)/data.cql:/scripts/data.cql" \
 -e CQLSH_HOST=cassandra -e CQLSH_PORT=9042 \
--e CQLVERSION=3.4.6 nuvo/docker-cqlsh
+-e CQLVERSION=3.4.7 nuvo/docker-cqlsh
 
 for windows
-docker run --rm --network cassandra -v "$(pwd)/data.cql:/scripts/data.cql" -e CQLSH_HOST=cassandra -e CQLSH_PORT=9042 -e CQLVERSION=3.4.6 nuvo/docker-cqlsh
+```
+docker run --rm --network cassandra -v "$(pwd)/data.cql:/scripts/data.cql" -e CQLSH_HOST=cassandra -e CQLSH_PORT=9042 -e CQLVERSION=3.4.7 nuvo/docker-cqlsh
+```
+
+
+
+
+
+
+
+
+
